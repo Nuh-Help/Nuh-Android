@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">Nuh</string>
+    <string name="title_home">Home</string>
+    <string name="title_need_help">Get help</string>
+    <string name="title_give_help">Give help</string>
+    <string name="title_profile">Profile</string>
+
+    <string name="accommodation">Accommodation</string>
+    <string name="food">Food</string>
+    <string name="clothes">Clothes</string>
+    <string name="medicine">Medicine</string>
+    <string name="other">Other</string>
+    <string name="volunteer_be">Be a volunteer</string>
+    <string name="volunteer_need">Need a volunteer</string>
+
+    <string name="need_accommodation">Need Accommodation</string>
+    <string name="need_food">Need Food</string>
+    <string name="need_clothes">Need Clothes</string>
+    <string name="need_medicine">Need Medicine</string>
+    <string name="need_other">Need Other</string>
+
+    <string name="give_accommodation">Give Accommodation</string>
+    <string name="give_food">Give Food</string>
+    <string name="give_clothes">Give Clothes</string>
+    <string name="give_medicine">Give Medicine</string>
+    <string name="give_other">Give Other</string>
+
+    <string name="submit">Submit</string>
+
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Confirm password</string>
+    <string name="current_password">Current password</string>
+    <string name="new_password">New password</string>
+    <string name="show_password">Show password</string>
+    <string name="change_password">Change password</string>
+    <string name="register">Register</string>
+    <string name="login">Log in</string>
+    <string name="logout">Log out</string>
+    <string name="logo">Logo</string>
+
+    <string name="login_register">Already have account? Login here.</string>
+    <string name="register_login">Don\'t have an account yet? Register here.</string>
+
+    <string name="dummy_full_name">John Doe</string>
+    <string name="dummy_email">john_doe@mail.com</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+
+
+</resources>

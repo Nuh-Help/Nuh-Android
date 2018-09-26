@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFFFC107</color>
+    <color name="colorPrimaryDark">#D2A008</color>
+    <color name="colorAccent">#05bc48</color>
+    <color name="colorNuhGreen">@color/colorAccent</color>
+    <color name="colorNuhBlue">#007BFF</color>
+    <color name="colorNuhBlueDark">#0065d2</color>
+    <color name="colorNuhBlueLight">#2e92fd</color>
+    <color name="colorNuhRed">#bd2130</color>
+    <color name="colorNuhRedLight">#e12234</color>
+    <color name="colorFont">#FFF</color>
+    <color name="colorFontDark">#b0ffffff</color>
+    <color name="unchecked_toggle">#AAA</color>
+    <color name="checked_toggle">#007ACC</color>
+
+</resources>
