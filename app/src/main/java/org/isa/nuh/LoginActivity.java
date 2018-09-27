@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements SPController {
 
     TextView toRegisterText;
     Button loginBtn;
@@ -19,6 +19,7 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.button_login);
         loginBtn.setOnClickListener(view -> {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            getSharedPreferences(LOGIN, MODE_PRIVATE).edit().putBoolean(IS_LOGGED_IN, true).apply();
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();

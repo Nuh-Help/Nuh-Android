@@ -6,12 +6,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class WelcomeActivity extends AppCompatActivity {
+public class WelcomeActivity extends AppCompatActivity implements SPController {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+
+        boolean loggedIn = getSharedPreferences(LOGIN, MODE_PRIVATE).getBoolean(IS_LOGGED_IN, false);
+        if (loggedIn) {
+            startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
+            finish();
+        }
 
         MapFragment mapFragment = new MapFragment();
         FragmentManager manager = getSupportFragmentManager();

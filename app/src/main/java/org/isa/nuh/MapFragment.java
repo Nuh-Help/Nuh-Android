@@ -163,18 +163,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    public void needMedicine() {try {
-        addMarkersFromJSON(dummyJSON);
-    } catch (NullPointerException e) {
-        Toast.makeText(getActivity(), "Problem loading map", Toast.LENGTH_SHORT).show();
-    }
+    public void needMedicine() {
+        try {
+            addMarkersFromJSON(dummyJSON);
+        } catch (NullPointerException e) {
+            Toast.makeText(getActivity(), "Problem loading map", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    public void needOther() {try {
-        addMarkersFromJSON(dummyJSON);
-    } catch (NullPointerException e) {
-        Toast.makeText(getActivity(), "Problem loading map", Toast.LENGTH_SHORT).show();
-    }
+    public void needOther() {
+        try {
+            addMarkersFromJSON(dummyJSON);
+        } catch (NullPointerException e) {
+            Toast.makeText(getActivity(), "Problem loading map", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void needVolunteer() {
