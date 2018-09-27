@@ -21,7 +21,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:srcCompat="@drawable/logo_500" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/username_layout_register"
@@ -152,6 +152,7 @@
             android:textAlignment="center"
             android:textColor="@color/colorNuhBlueDark"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp"
             app:layout_constraintEnd_toEndOf="@+id/button_register_registration"
             app:layout_constraintStart_toStartOf="@+id/button_register_registration"
             app:layout_constraintTop_toBottomOf="@id/button_register_registration" />

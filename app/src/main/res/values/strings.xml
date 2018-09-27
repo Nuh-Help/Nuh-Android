@@ -49,5 +49,7 @@
     <string name="dummy_email">john_doe@mail.com</string>
     <string name="title_activity_profile">ProfileActivity</string>
 
+    <string name="reason">Tell us more about it</string>
+
 
 </resources>

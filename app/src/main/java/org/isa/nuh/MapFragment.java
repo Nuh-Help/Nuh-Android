@@ -1,9 +1,16 @@
 package org.isa.nuh;
 
+import android.Manifest;
+import android.app.Dialog;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +19,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +40,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
+
+    private static final int ERROR_DIALOG_REQUEST = 9001;
+    private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
+    private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+
+    boolean mLocationPermissionGranted = false;
+    private FusedLocationProviderClient mFusedLoacationProviderClient;
+    LatLng deviceLocation;
 
     private GoogleMap mMap;
     private String dummyJSON = "[\n" +
@@ -105,9 +127,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                if (mMap != null) mMap.clear();
             }
         });
+
+        FloatingActionButton fab = getActivity().findViewById(R.id.locationFab);
+        fab.setOnClickListener(v -> {
+            if (mLocationPermissionGranted) {
+                if (ActivityCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                mMap.setMyLocationEnabled(true);
+                getDeviceLocation();
+                moveCamera(deviceLocation, 15f);
+            } else {
+                getLocationPermission();
+                getDeviceLocation();
+            }
+        });
+
     }
 
     @Override
@@ -116,9 +157,86 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void initMap() {
+        if (!isServicesOK()) {
+            Toast.makeText(getActivity(), "Problem loading map", Toast.LENGTH_SHORT).show();
+            return;
+        }
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    void getDeviceLocation() {
+        mFusedLoacationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+        try {
+            if (mLocationPermissionGranted) {
+                Task location = mFusedLoacationProviderClient.getLastLocation();
+                location.addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Location currentLocation = (Location) task.getResult();
+                        if (currentLocation == null) return;
+                        deviceLocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                    } else {
+                        Toast.makeText(getActivity(), "Unable to get current location", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        mLocationPermissionGranted = false;
+
+        switch (requestCode) {
+            case LOCATION_PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0) {
+                    for (int result : grantResults) {
+                        if (result != PackageManager.PERMISSION_GRANTED) {
+                            mLocationPermissionGranted = false;
+                            return;
+                        }
+                    }
+                    mLocationPermissionGranted = true;
+                }
+        }
+    }
+
+    void getLocationPermission() {
+        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+
+        if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                mLocationPermissionGranted = true;
+            } else {
+                ActivityCompat.requestPermissions(getActivity(), permissions, LOCATION_PERMISSION_REQUEST_CODE);
+            }
+        } else {
+            ActivityCompat.requestPermissions(getActivity(), permissions, LOCATION_PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    boolean isServicesOK() {
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getActivity());
+
+        if (available == ConnectionResult.SUCCESS) {
+            return true;
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
+            Dialog dialog = GoogleApiAvailability.getInstance()
+                    .getErrorDialog(getActivity(), available, ERROR_DIALOG_REQUEST);
+            dialog.show();
+        } else {
+            Toast.makeText(getActivity(), "You can't make map requests", Toast.LENGTH_SHORT).show();
+        }
+        return false;
+    }
+
+    private void moveCamera(LatLng latLng, float zoom) {
+        if (latLng == null) return;
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
     public void addMarkersFromJSON(String JSON) {
