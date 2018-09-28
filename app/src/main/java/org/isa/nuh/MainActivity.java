@@ -1,6 +1,7 @@
 package org.isa.nuh;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -116,5 +117,23 @@ public class MainActivity extends AppCompatActivity implements SPController {
                 e.printStackTrace();
             }
         });
+    }
+
+    void submitChangesToServer() {
+        SharedPreferences sp = getSharedPreferences(HELP_CATEGORIES, MODE_PRIVATE);
+        boolean needAccomodation = sp.getBoolean(ACCOMODATION_NEED, false);
+        boolean needFood = sp.getBoolean(FOOD_NEED, false);
+        boolean needClothes = sp.getBoolean(CLOTHES_NEED, false);
+        boolean needMedicine = sp.getBoolean(MEDICINE_NEED, false);
+        boolean needOther = sp.getBoolean(OTHER_NEED, false);
+
+        String needAccomodationReason = sp.getString(ACCOMODATION_NEED_TEXT, "");
+        String needFoodReason = sp.getString(FOOD_NEED_TEXT, "");
+        String needClothesReason = sp.getString(CLOTHES_NEED_TEXT, "");
+        String needMedicineReason = sp.getString(MEDICINE_NEED_TEXT, "");
+        String needOtherReason = sp.getString(OTHER_NEED_TEXT, "");
+
+
+
     }
 }

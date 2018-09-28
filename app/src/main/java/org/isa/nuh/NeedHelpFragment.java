@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionManager;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -40,8 +41,6 @@ public class NeedHelpFragment extends Fragment implements SPController {
     }
 
     private void submitChanges() {
-        // proveri koje su kategorije kliknute
-
         SharedPreferences.Editor editor = Objects.requireNonNull(getActivity())
                 .getSharedPreferences(HELP_CATEGORIES, Context.MODE_PRIVATE).edit();
 
@@ -66,11 +65,6 @@ public class NeedHelpFragment extends Fragment implements SPController {
         editor.putString(MEDICINE_NEED_TEXT, isPressed
                 ? ((EditText) getActivity().findViewById(R.id.medicine_card_edittext_need)).getText().toString()
                 : null);
-        isPressed = isCardPressed.get(R.id.volunteer_card_need);
-        editor.putBoolean(VOLUNTEER_NEED, isPressed);
-        editor.putString(VOLUNTEER_NEED_TEXT, isPressed
-                ? ((EditText) getActivity().findViewById(R.id.volunteer_card_edittext_need)).getText().toString()
-                : null);
         isPressed = isCardPressed.get(R.id.other_card_need);
         editor.putBoolean(OTHER_NEED, isPressed);
         editor.putString(OTHER_NEED_TEXT, isPressed
@@ -79,8 +73,10 @@ public class NeedHelpFragment extends Fragment implements SPController {
 
         editor.apply();
 
-        // TODO: submit changes to server
-
+        Context parent = getActivity();
+        if (parent instanceof MainActivity) {
+            ((MainActivity) parent).submitChangesToServer();
+        }
     }
 
     private void initSparseArray() {
@@ -91,7 +87,6 @@ public class NeedHelpFragment extends Fragment implements SPController {
         isCardPressed.append(R.id.food_card_need, sp.getBoolean(FOOD_NEED, false));
         isCardPressed.append(R.id.clothes_card_need, sp.getBoolean(CLOTHES_NEED, false));
         isCardPressed.append(R.id.medicine_card_need, sp.getBoolean(MEDICINE_NEED, false));
-        isCardPressed.append(R.id.volunteer_card_need, sp.getBoolean(VOLUNTEER_NEED, false));
         isCardPressed.append(R.id.other_card_need, sp.getBoolean(OTHER_NEED, false));
 
     }
@@ -108,7 +103,6 @@ public class NeedHelpFragment extends Fragment implements SPController {
         setCardChecked(R.id.food_card_need, R.id.food_card_edittext_need, FOOD_NEED_TEXT);
         setCardChecked(R.id.clothes_card_need, R.id.clothes_card_edittext_need, CLOTHES_NEED_TEXT);
         setCardChecked(R.id.medicine_card_need, R.id.medicine_card_edittext_need, MEDICINE_NEED_TEXT);
-        setCardChecked(R.id.volunteer_card_need, R.id.volunteer_card_edittext_need, VOLUNTEER_NEED_TEXT);
         setCardChecked(R.id.other_card_need, R.id.other_card_edittext_need, OTHER_NEED_TEXT);
 
     }

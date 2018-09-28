@@ -43,14 +43,12 @@ public class GiveHelpFragment extends Fragment {
         isCardPressed.append(R.id.food_card_give, false);
         isCardPressed.append(R.id.clothes_card_give, false);
         isCardPressed.append(R.id.medicine_card_give, false);
-        isCardPressed.append(R.id.volunteer_card_give, false);
         isCardPressed.append(R.id.other_card_give, false);
 
         setCardListener(R.id.accomodation_card_give, R.id.accomodation_card_edittext_give);
         setCardListener(R.id.food_card_give, R.id.food_card_edittext_give);
         setCardListener(R.id.clothes_card_give, R.id.clothes_card_edittext_give);
         setCardListener(R.id.medicine_card_give, R.id.medicine_card_edittext_give);
-        setCardListener(R.id.volunteer_card_give, R.id.volunteer_card_edittext_give);
         setCardListener(R.id.other_card_give, R.id.other_card_edittext_give);
     }
 

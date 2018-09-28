@@ -92,14 +92,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SPContr
         categories.add(getResources().getString(R.string.need_food));
         categories.add(getResources().getString(R.string.need_clothes));
         categories.add(getResources().getString(R.string.need_medicine));
-        categories.add(getResources().getString(R.string.volunteer_need));
         categories.add(getResources().getString(R.string.need_other));
 
         categories.add(getResources().getString(R.string.give_accommodation));
         categories.add(getResources().getString(R.string.give_food));
         categories.add(getResources().getString(R.string.give_clothes));
         categories.add(getResources().getString(R.string.give_medicine));
-        categories.add(getResources().getString(R.string.volunteer_be));
         categories.add(getResources().getString(R.string.give_other));
 
         ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
@@ -115,15 +113,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SPContr
                     case 1: needFood(); break;
                     case 2: needClothes(); break;
                     case 3: needMedicine(); break;
-                    case 4: needVolunteer(); break;
-                    case 5: needOther(); break;
+                    case 4: needOther(); break;
 
-                    case 6: giveAccomodation(); break;
-                    case 7: giveFood(); break;
-                    case 8: giveClothes(); break;
-                    case 9: giveMedicine(); break;
-                    case 10: giveVolunteer(); break;
-                    case 11: giveOther(); break;
+                    case 5: giveAccomodation(); break;
+                    case 6: giveFood(); break;
+                    case 7: giveClothes(); break;
+                    case 8: giveMedicine(); break;
+                    case 9: giveOther(); break;
                 }
             }
 
@@ -303,14 +299,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SPContr
         }
     }
 
-    public void needVolunteer() {
-        try {
-            addMarkersFromJSON(dummyJSON);
-        } catch (NullPointerException e) {
-            Toast.makeText(getActivity(), "Problem loading map", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     // These methods make get request and retrieve locations on map for GiveHelp
     public void giveAccomodation() {
         try {
@@ -345,14 +333,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SPContr
     }
 
     public void giveOther() {
-        try {
-            addMarkersFromJSON(dummyJSON);
-        } catch (NullPointerException e) {
-            Toast.makeText(getActivity(), "Problem loading map", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void giveVolunteer() {
         try {
             addMarkersFromJSON(dummyJSON);
         } catch (NullPointerException e) {
