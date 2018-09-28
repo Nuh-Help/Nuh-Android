@@ -2,6 +2,8 @@ package org.isa.nuh;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -39,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, SPController {
 
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -177,6 +179,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         Location currentLocation = (Location) task.getResult();
                         if (currentLocation == null) return;
                         deviceLocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                        SharedPreferences.Editor editor = getActivity().getSharedPreferences(LOGIN, Context.MODE_PRIVATE).edit();
+                        editor.putString(LATITUDE, String.valueOf(deviceLocation.latitude));
+                        editor.putString(LATITUDE, String.valueOf(deviceLocation.longitude));
+                        editor.apply();
                     } else {
                         Toast.makeText(getActivity(), "Unable to get current location", Toast.LENGTH_SHORT).show();
                     }

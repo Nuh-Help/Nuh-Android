@@ -5,6 +5,9 @@ public interface SPController {
     String LOGIN = "LOGIN";
     String IS_LOGGED_IN = "IS_LOGGED_IN";
 
+    String LATITUDE = "LATITUDE";
+    String LONGITUDE = "LONGITUDE";
+
     String HELP_CATEGORIES = "HELP_CATEGORIES";
 
     String ACCOMODATION_NEED = "ACCOMODATION_NEED";
@@ -20,5 +23,4 @@ public interface SPController {
     String MEDICINE_NEED_TEXT = "MEDICINE_NEED_TEXT";
     String VOLUNTEER_NEED_TEXT = "VOLUNTEER_NEED_TEXT";
     String OTHER_NEED_TEXT = "OTHER_NEED_TEXT";
-
 }
