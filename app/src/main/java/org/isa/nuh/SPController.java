@@ -2,8 +2,13 @@ package org.isa.nuh;
 
 public interface SPController {
 
+    String URL = "http://192.168.1.13:8000";
+
     String LOGIN = "LOGIN";
     String IS_LOGGED_IN = "IS_LOGGED_IN";
+
+    String USERNAME = "USERNAME";
+    String PASSWORD = "PASSWORD";
 
     String LATITUDE = "LATITUDE";
     String LONGITUDE = "LONGITUDE";

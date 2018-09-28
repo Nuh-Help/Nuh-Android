@@ -1,6 +1,7 @@
 package org.isa.nuh;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
@@ -8,6 +9,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.io.IOException;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 public class MainActivity extends AppCompatActivity implements SPController {
 
@@ -82,9 +88,7 @@ public class MainActivity extends AppCompatActivity implements SPController {
 
         switch (item.getItemId()) {
             case R.id.logout_menu:
-                // TODO: logout logic
-                getSharedPreferences(HELP_CATEGORIES, MODE_PRIVATE).edit().clear().apply();
-                getSharedPreferences(LOGIN, MODE_PRIVATE).edit().putBoolean(IS_LOGGED_IN, false).apply();
+                logout();
                 intent = new Intent(MainActivity.this, WelcomeActivity.class);
                 startActivity(intent);
                 finish();
@@ -95,5 +99,22 @@ public class MainActivity extends AppCompatActivity implements SPController {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logout() {
+        getSharedPreferences(HELP_CATEGORIES, MODE_PRIVATE).edit().clear().apply();
+        getSharedPreferences(LOGIN, MODE_PRIVATE).edit().putBoolean(IS_LOGGED_IN, false).apply();
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(URL + "/nuh/logout")
+                .build();
+        AsyncTask.execute(() -> {
+            try {
+                client.newCall(request).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
