@@ -7,7 +7,6 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,10 +25,17 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+
+/**
+ * Activity for logging in.
+ * @see LoginActivity for login with existing accounts.
+ * @author Hamza Muric
+ */
 public class RegistrationActivity extends AppCompatActivity implements SPController {
 
-    private static final String TAG = "RegistrationActivity";
-
+    /*
+     * Package-private class fields for referencing views inside activity.
+     */
     TextView toLoginText;
     Button registerBtn;
     TextInputEditText usernameText;
@@ -39,6 +45,11 @@ public class RegistrationActivity extends AppCompatActivity implements SPControl
     TextInputEditText lastNameText;
     TextInputEditText emailText;
 
+    /**
+     * Called when view is getting created.
+     * Initializes view references.
+     * @param savedInstanceState saved previous state of views in activity.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +73,10 @@ public class RegistrationActivity extends AppCompatActivity implements SPControl
         });
     }
 
+    /*
+     *  Called when registerBtn is clicked.
+     *  Gets data from text fields and makes registration request to server, making new user.
+     */
     private void registerRequest() {
         String username = usernameText.getText().toString();
         String password = passwordText.getText().toString();
@@ -139,7 +154,6 @@ public class RegistrationActivity extends AppCompatActivity implements SPControl
                 for (Cookie cookie : cookies) {
                     if (cookie.name().equals("csrftoken")) {
                         token = cookie.value();
-                        Log.d(TAG, "loginRequest: cookie value: " + token);
                     }
                 }
 

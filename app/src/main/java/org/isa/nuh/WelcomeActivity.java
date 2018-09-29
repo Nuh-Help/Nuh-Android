@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -24,8 +23,20 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+/**
+ * Launching activity.
+ * Providing user with welcome screen with some map functionality
+ * and Login and Register options.
+ * This activity is shown to user only if the user is not logged in.
+ * @author Hamza Muric
+ */
 public class WelcomeActivity extends AppCompatActivity implements SPController {
 
+    /**
+     * Called when view is getting created.
+     * Initializes view references.
+     * @param savedInstanceState saved previous state of views in activity.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +64,11 @@ public class WelcomeActivity extends AppCompatActivity implements SPController {
         });
     }
 
+    /*
+     * Logs the user in and updates the local storage with correct login info.
+     * It is only called when the user has already logged in,
+     * bypassing the welcome screen and navigating the user directly into the MainActivity.
+     */
     private void login() {
         SharedPreferences sp = getSharedPreferences(LOGIN, MODE_PRIVATE);
         String username = sp.getString(USERNAME, null);

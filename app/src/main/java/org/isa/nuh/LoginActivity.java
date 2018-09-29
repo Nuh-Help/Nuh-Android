@@ -7,7 +7,6 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,15 +25,28 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+
+/**
+ * Activity for logging in.
+ * @see RegistrationActivity for registration of new accounts
+ * @author Hamza Muric
+ */
 public class LoginActivity extends AppCompatActivity implements SPController {
 
-    private static final String TAG = "LoginActivity";
-
+    /*
+     * Package-private class fields for referencing views inside activity.
+     */
     TextView toRegisterText;
     Button loginBtn;
     TextInputEditText usernameText;
     TextInputEditText passwordText;
 
+
+    /**
+     * Called when view is getting created.
+     * Initializes view references.
+     * @param savedInstanceState saved previous state of views in activity.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +66,10 @@ public class LoginActivity extends AppCompatActivity implements SPController {
         });
     }
 
+    /*
+     *  Called when loginBtn is clicked.
+     *  Gets data from text fields and makes login request to server.
+     */
     private void loginRequest() {
         String username = usernameText.getText().toString();
         String password = passwordText.getText().toString();
@@ -107,7 +123,6 @@ public class LoginActivity extends AppCompatActivity implements SPController {
                 for (Cookie cookie : cookies) {
                     if (cookie.name().equals("csrftoken")) {
                         token = cookie.value();
-                        Log.d(TAG, "loginRequest: cookie value: " + token);
                     }
                 }
 

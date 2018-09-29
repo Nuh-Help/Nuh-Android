@@ -41,18 +41,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Fragment for showing GoogleMap and providing functionality for it.
+ * Showed on {@link MainActivity} and {@link WelcomeActivity}.
+ * @author Hamza Muric
+ */
 public class MapFragment extends Fragment implements OnMapReadyCallback, SPController {
 
+    // Private constants.
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
 
+    // vars.
     boolean mLocationPermissionGranted = false;
     private FusedLocationProviderClient mFusedLoacationProviderClient;
     LatLng deviceLocation;
 
     private GoogleMap mMap;
+    // Should be removed because of getting data from server.
     private String dummyJSON = "[\n" +
             "    {\n" +
             "        \"position\": {\n" +
@@ -69,21 +77,37 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SPContr
             "    {\n" +
             "        \"position\": {\n" +
             "            \"lat\": \"-12.43\",\n" +
-            "            \"lng\": \"-3.445\"\n" +
+            "            \"lng\": \"-41.445\"\n" +
             "        }\n" +
             "    },\n" +
             "]";
 
+    /**
+     * Empty constructor.
+     * Required public constructor.
+     */
     public MapFragment() {
         // Required empty public constructor
     }
 
+    /**
+     * Called when fragment view is creating.
+     * @param inflater inflater for fragment layout.
+     * @param container container of layout
+     * @param savedInstanceState
+     * @return inflated fragment view
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_map, container, false);
     }
 
+    /**
+     * Called when fragment view is finished creating (it's created).
+     * @param view this fragment view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         initMap();
@@ -149,11 +173,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SPContr
 
     }
 
+    /**
+     * Sets map to GoogleMap from GoogleMapApi.
+     * Implementation of onMapReady from {@link OnMapReadyCallback} interface.
+     * @param googleMap GoogleMap got from GoogleMapApi.
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
     }
 
+    // Initializes GoogleMap.
     private void initMap() {
         if (!isServicesOK()) {
             Toast.makeText(getActivity(), "Problem loading map", Toast.LENGTH_SHORT).show();
@@ -164,6 +194,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SPContr
         mapFragment.getMapAsync(this);
     }
 
+    /**
+     * Gets device's current location and saves it to {@link SharedPreferences} local storage.
+     */
     void getDeviceLocation() {
         mFusedLoacationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
@@ -189,6 +222,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SPContr
         }
     }
 
+    /**
+     * Called when requesting permissions and gets it's results.
+     * @param requestCode Permission request code.
+     * @param permissions Array of requested permissions.
+     * @param grantResults Result of requested permissions.
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         mLocationPermissionGranted = false;
@@ -207,6 +246,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SPContr
         }
     }
 
+    /**
+     * Requests location permissions needed by GoogleMap to work.
+     */
     void getLocationPermission() {
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
@@ -221,6 +263,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SPContr
         }
     }
 
+    /**
+     * Checks availability of GooglePlayServices.
+     * If needed version is not installed, it provides dialog for downloading services.
+     * @return are services available
+     */
     boolean isServicesOK() {
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getActivity());
 
@@ -236,11 +283,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, SPContr
         return false;
     }
 
+    // Moves map camera to given coordinates with custom zoom.
     private void moveCamera(LatLng latLng, float zoom) {
         if (latLng == null) return;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
+    /**
+     * Parses JSON string and adds marker to the map based on information received.
+     * @param JSON String with JSON-formatted data.
+     */
     public void addMarkersFromJSON(String JSON) {
         try {
             JSONArray array = new JSONArray(JSON);

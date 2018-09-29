@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionManager;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -17,21 +16,42 @@ import android.widget.EditText;
 
 import java.util.Objects;
 
+/**
+ * Fragment for showing options for getting help.
+ * Used in {@link MainActivity}.
+ * @author Hamza Muric
+ */
 public class NeedHelpFragment extends Fragment implements SPController {
 
+    // Int to Boolean map-like array for storing current pressed state of categories.
     private SparseBooleanArray isCardPressed = new SparseBooleanArray(6);
 
-
+    /**
+     * Empty constructor.
+     * Required public constructor.
+     */
     public NeedHelpFragment() {
         // Required empty public constructor
     }
 
+    /**
+     * Called when fragment view is creating.
+     * @param inflater inflater for fragment layout.
+     * @param container container of layout
+     * @param savedInstanceState saved previous state of views in activity.
+     * @return inflated fragment view
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_need_help, container, false);
     }
 
+    /**
+     * Called when fragment view is finished creating (it's created).
+     * @param view this fragment view
+     * @param savedInstanceState saved previous state of views in activity.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Button submit = view.findViewById(R.id.submit_need_help);
@@ -40,6 +60,11 @@ public class NeedHelpFragment extends Fragment implements SPController {
         initViews();
     }
 
+    /**
+     * Called when submit button is pressed.
+     * Stores current categories state in {@link SharedPreferences}
+     * and calls submitChangesToServer method from {@link MainActivity}.
+     */
     private void submitChanges() {
         SharedPreferences.Editor editor = Objects.requireNonNull(getActivity())
                 .getSharedPreferences(HELP_CATEGORIES, Context.MODE_PRIVATE).edit();
@@ -79,6 +104,10 @@ public class NeedHelpFragment extends Fragment implements SPController {
         }
     }
 
+    /*
+     * Called in onViewCreated.
+     * Initializes SparseBooleanArray for storing categories current pressed state.
+     */
     private void initSparseArray() {
         SharedPreferences sp = Objects.requireNonNull(getActivity())
                 .getSharedPreferences(HELP_CATEGORIES, Context.MODE_PRIVATE);
@@ -91,12 +120,15 @@ public class NeedHelpFragment extends Fragment implements SPController {
 
     }
 
+    /*
+     * Called in onViewCreated.
+     * Initializes card listeners and sets them to checked/unchecked state.
+     */
     private void initViews() {
         setCardListener(R.id.accomodation_card_need, R.id.accomodation_card_edittext_need);
         setCardListener(R.id.food_card_need, R.id.food_card_edittext_need);
         setCardListener(R.id.clothes_card_need, R.id.clothes_card_edittext_need);
         setCardListener(R.id.medicine_card_need, R.id.medicine_card_edittext_need);
-        setCardListener(R.id.volunteer_card_need, R.id.volunteer_card_edittext_need);
         setCardListener(R.id.other_card_need, R.id.other_card_edittext_need);
 
         setCardChecked(R.id.accomodation_card_need, R.id.accomodation_card_edittext_need, ACCOMODATION_NEED_TEXT);
@@ -107,6 +139,7 @@ public class NeedHelpFragment extends Fragment implements SPController {
 
     }
 
+    // Sets categories cards to checked/unchecked state.
     private void setCardChecked(final int cardID, final int editTextID, String editTextSPKey) {
         ViewGroup card = Objects.requireNonNull(getActivity()).findViewById(cardID);
 
@@ -130,6 +163,7 @@ public class NeedHelpFragment extends Fragment implements SPController {
         }
     }
 
+    // Sets onClickListeners for categories cards.
     private void setCardListener(final int cardID, final int editTextID) {
         Objects.requireNonNull(getActivity()).findViewById(cardID).setOnClickListener(v -> {
             ViewGroup card = getActivity().findViewById(cardID);
