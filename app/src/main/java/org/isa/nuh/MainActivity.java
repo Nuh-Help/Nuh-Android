@@ -241,7 +241,6 @@ public class MainActivity extends AppCompatActivity implements SPController {
 
         AsyncTask.execute(() -> {
             try {
-
                 HttpUrl urlGet = HttpUrl.parse(URL + "/nuh/save_checkboxes")
                         .newBuilder()
                         .build();
@@ -339,7 +338,6 @@ public class MainActivity extends AppCompatActivity implements SPController {
 
         AsyncTask.execute(() -> {
             try {
-
                 HttpUrl url = HttpUrl.parse(URL + "/nuh/myprofile")
                         .newBuilder()
                         .build();
